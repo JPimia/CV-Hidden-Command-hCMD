@@ -7,6 +7,7 @@ namespace hCMD
         public static void Main(string[] args)
         {
             Console.WriteLine("You can't see this output due to app being in windowed mode.");
+
         }
 
         private static void SetupLogging()
