@@ -19,7 +19,22 @@ namespace hCMD
                 return;
             }
             string command = args[0];
-            string arguments = string.Join(" ", args, 1, args.Length - 1);
+            string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
+
+            switch (command.ToLower())
+            {
+                case "start":
+                    if (string.IsNullOrWhiteSpace(arguments))
+                    {
+                        Console.WriteLine("Usage: hCMD start <process>");
+                        return;
+                    }
+                    ProcessExecutor.Execute(command, arguments);
+                    break;
+                default:
+                    Console.WriteLine("unknown command: <command>");
+                    break;
+            }
         }
 
         private static void SetupLogging()
