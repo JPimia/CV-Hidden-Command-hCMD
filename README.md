@@ -6,6 +6,7 @@ Features that should be included:
 - Must have logging framework (NLog) and log to console.log file
 - Executing commands directly via arguments (example: hCMD start notepad)
 - Executing commands via profile/file (hCMD /profile OpenNotepad)
+- NOTE! Make ProcessExecutor with Singleton design pattern
 - Can include itself into environment PATH variable
 - Think of additional features that could be useful
 - A way to show usage instructions
