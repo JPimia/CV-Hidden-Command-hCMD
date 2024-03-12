@@ -1,6 +1,4 @@
 ﻿using NLog;
-using System;
-using hCMD.Tests;
 using NLog.Targets;
 using NLog.Config;
 
@@ -20,6 +18,7 @@ namespace hCMD
             // logger.Info("This is test message");
             // logger.Debug("This is test message");
             // Console.Read();
+
             if (args.Length < 1)
             {
                 logger.Trace("Usage: hCMD <command> <args>");

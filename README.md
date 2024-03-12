@@ -4,7 +4,7 @@ Hidden Command can execute command without displaying a console window (unlike t
 
 Features that should be included:
 - Must have logging framework (NLog) and log to console.log file
-- Executing commands directly via arguments (example: hCMD start notepad)
+- Executing commands directly via arguments (example: hCMD start /affinity 1 notepad)
 - Executing commands via profile/file (hCMD /profile OpenNotepad)
 - NOTE! Make ProcessExecutor with Singleton design pattern
 - Can include itself into environment PATH variable
