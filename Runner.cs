@@ -1,15 +1,16 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
+using System.Diagnostics;
 
 namespace hCMD
 {
     internal class Runner
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
+        private static Process process = new Process();
         public static void Main(string[] args)
-        { 
+        {
             SetupLogging();
 
             //Test.TestArguments_CommandLineArguments_ReturnString();
@@ -19,28 +20,31 @@ namespace hCMD
             // logger.Debug("This is test message");
             // Console.Read();
 
+            string processName = args[0];
+
             if (args.Length < 1)
             {
                 logger.Trace("Usage: hCMD <command> <args>");
                 return;
             }
-            string command = args[0];
-            string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
+            //string command = args[0];
+            //string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
 
-            switch (command.ToLower())
-            {
-                case "start":
-                    if (string.IsNullOrWhiteSpace(arguments))
-                    {
-                        logger.Trace("Usage: hCMD start <process>");
-                        return;
-                    }
-                    ProcessExecutor.Execute(command, arguments);
-                    break;
-                default:
-                    logger.Trace("unknown command: <command>");
-                    break;
-            }
+            //switch (command.ToLower())
+            //{
+            //    case "start":
+            //        if (string.IsNullOrWhiteSpace(arguments))
+            //        {
+            //            logger.Trace("Usage: hCMD start <process>");
+            //            return;
+            //        }
+            //        ProcessExecutor.Execute(command, arguments);
+            //        break;
+            //    default:
+            //        logger.Trace("unknown command: <command>");
+            //        break;   
+            //}
+            process.StartInfo.FileName = args[0];
         }
 
         private static void SetupLogging()

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "hCMD": {
+      "commandName": "Project",
+      "commandLineArgs": "start notepad"
+    }
+  }
+}
