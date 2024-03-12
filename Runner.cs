@@ -1,5 +1,6 @@
 ﻿using NLog;
 using System;
+using hCMD.Tests;
 
 namespace hCMD
 {
@@ -9,6 +10,8 @@ namespace hCMD
         public static void Main(string[] args)
         { 
             SetupLogging();
+            Test.TestArguments_CommandLineArguments_ReturnString();
+            // Program.Main(args);
             // Console.WriteLine("You can't see this output due to app being in windowed mode.");
             // logger.Info("This is test message");
             // logger.Debug("This is test message");
