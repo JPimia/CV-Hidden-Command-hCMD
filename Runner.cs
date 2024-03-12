@@ -21,6 +21,7 @@ namespace hCMD
             // Console.Read();
 
             string processName = args[0];
+            string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
 
             if (args.Length < 1)
             {
@@ -44,7 +45,8 @@ namespace hCMD
             //        logger.Trace("unknown command: <command>");
             //        break;   
             //}
-            process.StartInfo.FileName = args[0];
+            ProcessExecutor executor = ProcessExecutor.GetInstance();
+            executor.Execute(processName, arguments);
         }
 
         private static void SetupLogging()
@@ -63,6 +65,7 @@ namespace hCMD
             configuration.LoggingRules.Add(loggingRule);
 
             LogManager.Configuration = configuration;
+            logger.Info("Logging setup complete");
         }
     }
 }
