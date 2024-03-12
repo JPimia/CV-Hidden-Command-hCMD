@@ -29,10 +29,11 @@ namespace hCMD
             try
             {
                 Process process = new Process();
-                process.StartInfo.FileName = processName;
-                process.StartInfo.Arguments = arguments;
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = $"/c {processName} {arguments}";
+                process.StartInfo.UseShellExecute = false;
                 process.Start();
-                logger.Info($"Process {processName} started with arguments {arguments}");
+                logger.Info($"Process {processName} executed with arguments {arguments}");
             }
             catch (Exception ex)
             {
