@@ -1,16 +1,20 @@
 ﻿using NLog;
 using System;
 using hCMD.Tests;
+using NLog.Targets;
+using NLog.Config;
 
 namespace hCMD
 {
     internal class Runner
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public static void Main(string[] args)
         { 
             SetupLogging();
-            Test.TestArguments_CommandLineArguments_ReturnString();
+
+            //Test.TestArguments_CommandLineArguments_ReturnString();
             // Program.Main(args);
             // Console.WriteLine("You can't see this output due to app being in windowed mode.");
             // logger.Info("This is test message");
@@ -18,7 +22,7 @@ namespace hCMD
             // Console.Read();
             if (args.Length < 1)
             {
-                Console.WriteLine("Usage: hCMD <command> <args>");
+                logger.Trace("Usage: hCMD <command> <args>");
                 return;
             }
             string command = args[0];
@@ -29,23 +33,33 @@ namespace hCMD
                 case "start":
                     if (string.IsNullOrWhiteSpace(arguments))
                     {
-                        Console.WriteLine("Usage: hCMD start <process>");
+                        logger.Trace("Usage: hCMD start <process>");
                         return;
                     }
                     ProcessExecutor.Execute(command, arguments);
                     break;
                 default:
-                    Console.WriteLine("unknown command: <command>");
+                    logger.Trace("unknown command: <command>");
                     break;
             }
         }
 
         private static void SetupLogging()
         {
-            // TODO: Include NLog Nuget package to project references
-            // TODO: Setup NLog here
-            Console.WriteLine("Setting up logging");
-            NLog.LogManager.LoadConfiguration("NLog.config");
+            var configuration = new LoggingConfiguration();
+
+            var fileTarget = new FileTarget("file")
+            {
+                CreateDirs = true,
+                FileName = "logs/console.log"
+            };
+
+            var loggingRule = new LoggingRule("*", LogLevel.Trace, fileTarget);
+
+            configuration.AddTarget(fileTarget);
+            configuration.LoggingRules.Add(loggingRule);
+
+            LogManager.Configuration = configuration;
         }
     }
 }
