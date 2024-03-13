@@ -1,7 +1,6 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
-using System.Diagnostics;
 
 namespace hCMD
 {
@@ -50,8 +49,8 @@ namespace hCMD
 
             var fileTarget = new FileTarget("file")
             {
+                FileName = "logs/console.log",
                 CreateDirs = true,
-                FileName = "logs/console.log"
             };
 
             var loggingRule = new LoggingRule("*", LogLevel.Trace, fileTarget);

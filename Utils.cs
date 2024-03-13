@@ -17,13 +17,16 @@ namespace hCMD
 
         public static void UpdatePathVariable()
         {
-            //var scope = EnvironmentVariableTarget.User;
-            var currentDirectory = Directory.GetCurrentDirectory();
-            //var paths = ...;
+            if (IncludedInPathVariable()) return;
 
-            // TODO: Include current directory in environment PATH variable
-            // TODO: Get environment variable "PATH" for User and append current path to the end (if it's not there)
-            // TODO: Replace existing environment variable "PATH" (user scoped) with new PATH
+            var scope = EnvironmentVariableTarget.User;
+            var userPath = Environment.GetEnvironmentVariable("PATH", scope);
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            if (userPath != null)
+            {
+                Environment.SetEnvironmentVariable("PATH", $"{userPath};{currentDirectory}", scope);
+            }
         }
     }
 }

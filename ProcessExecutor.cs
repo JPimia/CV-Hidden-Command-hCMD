@@ -1,16 +1,16 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using NLog;
 
 namespace hCMD
 {
     internal class ProcessExecutor
     {
-        private static ProcessExecutor _instance;
-        private static readonly object _lock = new object();
+        private static ProcessExecutor? _instance;
+
+        private static readonly object _lock = new();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private ProcessExecutor() { }
+        private ProcessExecutor() {}
 
         public static ProcessExecutor GetInstance()
         {
@@ -25,16 +25,19 @@ namespace hCMD
                 return _instance;
             }
         }
+
         public void Execute(string processName, string arguments)
         {
             try
             {
-                Process process = new Process();
-                process.StartInfo = new ProcessStartInfo{
+                var process = new Process();
+
+                process.StartInfo = new ProcessStartInfo {
                     FileName = "cmd.exe",
                     Arguments = $"/c {processName}, {arguments}",
                     UseShellExecute = false
                 };
+
                 process.Start();
                 logger.Info($"Process '{processName}' executed with arguments '{arguments}'");
             }
