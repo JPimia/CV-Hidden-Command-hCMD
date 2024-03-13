@@ -8,7 +8,6 @@ namespace hCMD
         public static bool IncludedInPathVariable()
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            //var paths = ...;
 
             // TODO: Implement checking for environment PATH variable (if current directory is included)
             // TODO: Get environment variable PATH (user and system scoped) loop through those paths to see if current dir is there

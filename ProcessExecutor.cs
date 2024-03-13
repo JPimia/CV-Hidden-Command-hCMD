@@ -21,6 +21,7 @@ namespace hCMD
                     _instance = new ProcessExecutor();
                     logger.Trace("ProcessExecutor instance created");
                 }
+
                 return _instance;
             }
         }
