@@ -39,8 +39,7 @@ namespace hCMD
             //        break;   
             //}
 
-            ProcessExecutor executor = ProcessExecutor.GetInstance();
-            executor.Execute(processName, arguments);
+            ProcessExecutor.GetInstance().Execute(processName, arguments);
         }
 
         private static void SetupLogging()
