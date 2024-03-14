@@ -1,10 +1,13 @@
-{
-  "profiles": {
-     "profile1": {
-        "name": "profile1",
-        "processToStart": "cmd.exe",
-        "arguments": "start notepad"
-    }
+[
+  {
+    "name": "profile1",
+    "processToStart": "cmd.exe",
+    "arguments": "start notepad"
+  },
+  {
+    "name": "profile2",
+    "processToStart": "cmd.exe",
+    "arguments": "start calc"
   }
-}
+]
 

@@ -18,11 +18,22 @@ namespace hCMD
                 logger.Trace("Usage: hCMD <command> <args>");
                 return;
             }
-            string jsonFilePath = "profiles.json";
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string jsonFileName = "profiles.json";
+            string jsonFilePath = Path.Combine(currentDirectory, jsonFileName);
             List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
 
             string processName = args[0];
             string arguments = string.Join(" ", args.Skip(1));
+
+            foreach (Profile profile in profiles)
+            {
+                if (profile.Name == arguments)
+                {
+                    ProcessExecutor.GetInstance().LoadProfile(profile);
+                    return;
+                }
+            }
 
             //string command = args[0];
             //string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
@@ -42,7 +53,7 @@ namespace hCMD
             //        break;   
             //}
 
-            ProcessExecutor.GetInstance().Execute(processName, arguments);
+            //ProcessExecutor.GetInstance().Execute(processName, arguments);
         }
 
         private static void SetupLogging()
