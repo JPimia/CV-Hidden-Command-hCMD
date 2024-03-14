@@ -1,7 +1,6 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
-using Newtonsoft.Json;
 
 namespace hCMD
 {
