@@ -46,5 +46,14 @@ namespace hCMD
                 logger.Error(ex, "Error executing process");
             }
         }
+        public void LoadProfile(Profile profile)
+        {
+            if (profile.ProcessToStart == null || profile.Arguments == null)
+            {
+                logger.Error("ProcessToStart or Arguments are null in the profile");
+                return;
+            }
+            Execute(profile.ProcessToStart, profile.Arguments);
+        }
     }
 }
