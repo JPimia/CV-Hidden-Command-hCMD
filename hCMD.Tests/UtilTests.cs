@@ -1,6 +1,6 @@
 namespace hCMD.Tests
 {
-    public class UtilsTests
+    public class UtilTests
     {
         [TestCase(@"C:\WINDOWS", @"C:\Test")]
         [TestCase(@"C:\WINDOWS;C:\Users\Tester", @"C:\WINDOWS\System32")]
