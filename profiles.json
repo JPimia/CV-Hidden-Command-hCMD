@@ -1,8 +1,8 @@
 [
   {
     "name": "profile1",
-    "processToStart": "cmd.exe",
-    "arguments": "start notepad"
+    "processToStart": "start",
+    "arguments": "notepad"
   },
   {
     "name": "profile2",

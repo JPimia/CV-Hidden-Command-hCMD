@@ -34,7 +34,7 @@ namespace hCMD
 
                 process.StartInfo = new ProcessStartInfo {
                     FileName = "cmd.exe",
-                    Arguments = $"/c {processName}, {arguments}",
+                    Arguments = $"/c {processName} {arguments}",
                     UseShellExecute = false
                 };
 
