@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
+using Newtonsoft.Json;
 
 namespace hCMD
 {
@@ -17,6 +18,8 @@ namespace hCMD
                 logger.Trace("Usage: hCMD <command> <args>");
                 return;
             }
+            string jsonFilePath = "profiles.json";
+            List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
 
             string processName = args[0];
             string arguments = string.Join(" ", args.Skip(1));
