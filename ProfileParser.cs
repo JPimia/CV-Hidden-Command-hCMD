@@ -10,7 +10,11 @@ namespace hCMD
             {
                 throw new FileNotFoundException($"File not found: {filePath}");
             }
-            return JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(filePath));
+            if (new FileInfo(filePath).Length == 0)
+            {
+                throw new InvalidDataException($"File is empty: {filePath}");
+            }
+            return JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(filePath))!;
         }
     }
 }
