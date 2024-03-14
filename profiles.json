@@ -1,0 +1,10 @@
+{
+  "profiles": {
+     "profile1": {
+        "name": "profile1",
+        "processToStart": "cmd.exe",
+        "arguments": "start notepad"
+    }
+  }
+}
+
