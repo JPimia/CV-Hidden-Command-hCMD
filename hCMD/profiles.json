@@ -5,7 +5,7 @@
     "arguments": "notepad"
   },
   {
-    "name": "profile2",
+    "name": "PrOfIle2",
     "processToStart": "cmd.exe",
     "arguments": "start calc"
   }

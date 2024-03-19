@@ -10,13 +10,28 @@ namespace hCMD.Tests
     {
         string jsonFilePath = "profiles.json";
         [Test]
-        public void CheckForProfileName_returnsTrue()
+        public void ProfilePropertiesIsNotEmpty_returnsTrue()
         {
             List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
 
             foreach (Profile profile in profiles)
             {
                 Assert.IsTrue(!string.IsNullOrEmpty(profile.Name));
+                Assert.IsTrue(!string.IsNullOrEmpty(profile.ProcessToStart));
+                Assert.IsTrue(!string.IsNullOrEmpty(profile.Arguments));
+            }
+        }
+
+        [Test]
+        public void ProfilePropertiesIgnoreCase()
+        {
+            List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
+
+            foreach (Profile profile in profiles)
+            {
+                Assert.That(profile.Name.ToLower() == profile.Name.ToLower());
+                Assert.That(profile.ProcessToStart.ToLower() == profile.ProcessToStart.ToLower());
+                Assert.That(profile.Arguments.ToLower() == profile.Arguments.ToLower());
             }
         }
     }
