@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace hCMD.Tests
 {
@@ -26,12 +22,17 @@ namespace hCMD.Tests
         public void ProfilePropertiesIgnoreCase()
         {
             List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
-            int index = 0;
             foreach (Profile profile in profiles)
             {
-                Assert.That(profile.Name.ToLower() == profile.Name.ToLower());
-                Assert.That(profile.ProcessToStart.ToLower() == profile.ProcessToStart.ToLower());
-                Assert.That(profile.Arguments.ToLower() == profile.Arguments.ToLower());
+                PropertyInfo[] properties = typeof(Profile).GetProperties();
+                foreach (var property in properties)
+                {
+                    object value = property.GetValue(profile)!;
+                    if (value is string stringValue)
+                    {
+                        Assert.That(stringValue.ToLower(), Is.EqualTo(stringValue!.ToLower()));
+                    }
+                }
             }
         }
 
