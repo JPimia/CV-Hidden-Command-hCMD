@@ -1,0 +1,1 @@
+- Add support for /addprofile switch that will create a new profile to profiles.json from existing file
