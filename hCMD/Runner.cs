@@ -4,7 +4,7 @@ using NLog.Config;
 
 namespace hCMD
 {
-    internal class Runner
+    public class Runner
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -18,8 +18,7 @@ namespace hCMD
                 return;
             }
             string currentDirectory = Directory.GetCurrentDirectory();
-            string jsonFileName = "profiles.json";
-            string jsonFilePath = Path.Combine(currentDirectory, jsonFileName);
+            string jsonFilePath = "profiles.json";
             List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
 
             string processName = args[0];

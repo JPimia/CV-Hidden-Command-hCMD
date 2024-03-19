@@ -2,7 +2,7 @@
 
 namespace hCMD
 {
-    internal class ProfileParser
+    public class ProfileParser
     {
         public static List<Profile> Parse(string filePath)
         {
