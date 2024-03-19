@@ -8,6 +8,11 @@
     "name": "PrOfIle2",
     "processToStart": "cmd.exe",
     "arguments": "start calc"
+  },
+  {
+    "name": "profile3",
+    "processToStart": "cmd.exe",
+    //"arguments": "start notepad++"
   }
 ]
 
