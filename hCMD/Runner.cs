@@ -17,41 +17,38 @@ namespace hCMD
                 logger.Trace("Usage: hCMD <command> <args>");
                 return;
             }
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string jsonFilePath = "profiles.json";
-            List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
 
-            string processName = args[0];
-            string arguments = string.Join(" ", args.Skip(1));
+            string action = args[0];
+            var executor = ProcessExecutor.GetInstance();
 
-            foreach (Profile profile in profiles)
+            switch (action)
             {
-                if (profile.Name == arguments)
-                {
-                    ProcessExecutor.GetInstance().LoadProfile(profile);
-                    return;
-                }
+                case "/updatePath":
+                    SetupPathVariable();
+                    break;
+                case "/profile":
+                    if (args.Length < 2)
+                    {
+                        logger.Warn("Missing profile identifier!");
+                        return;
+                    }
+
+                    var profileName = args[1];
+                    var profile = ProfileParser.GetProfile("profiles.json", profileName);
+
+
+                    if (profile == null)
+                    {
+                        logger.Warn($"Profile {profileName} was not found!");
+                        return;
+                    }
+
+                    executor.LoadProfile(profile);
+                    break;
+                default:
+                    executor.Execute(action, string.Join(" ", args.Skip(1)));
+                    break;
             }
-
-            //string command = args[0];
-            //string arguments = args.Length > 1 ? string.Join(" ", args, 1, args.Length - 1) : "";
-
-            //switch (command.ToLower())
-            //{
-            //    case "start":
-            //        if (string.IsNullOrWhiteSpace(arguments))
-            //        {
-            //            logger.Trace("Usage: hCMD start <process>");
-            //            return;
-            //        }
-            //        ProcessExecutor.Execute(command, arguments);
-            //        break;
-            //    default:
-            //        logger.Trace("unknown command: <command>");
-            //        break;   
-            //}
-
-            //ProcessExecutor.GetInstance().Execute(processName, arguments);
         }
 
         private static void SetupLogging()
@@ -71,6 +68,18 @@ namespace hCMD
 
             LogManager.Configuration = configuration;
             logger.Info("Logging setup complete");
+        }
+
+        private static void SetupPathVariable()
+        {
+            if (Utils.IncludedInPathVariable())
+            {
+                logger.Info("Environment PATH variable already contains current directory.");
+                return;
+            }
+
+            logger.Info("Environment PATH variable updated.");
+            Utils.UpdatePathVariable();
         }
     }
 }
