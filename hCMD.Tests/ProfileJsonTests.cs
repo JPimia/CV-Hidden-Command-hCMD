@@ -34,5 +34,18 @@ namespace hCMD.Tests
                 Assert.That(profile.Arguments.ToLower() == profile.Arguments.ToLower());
             }
         }
+
+        [Test]
+        public void ProfilePropertiesAreCorrectType()
+        {
+            List<Profile> profiles = ProfileParser.Parse(jsonFilePath);
+
+            foreach (Profile profile in profiles)
+            {
+                Assert.That(profile.Name, Is.TypeOf<string>());
+                Assert.That(profile.ProcessToStart, Is.TypeOf<string>());
+                Assert.That(profile.Arguments, Is.TypeOf<string>());
+            }
+        }
     }
 }
