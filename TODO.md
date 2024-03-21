@@ -1,1 +1,6 @@
+- Update current project source for unit testing/mocking
+	- Unit tests for JSON profiles
+	- Unit tests for Process execution (needs mocking)
+	- Unit tests for accepted arguments
 - Add support for /addprofile switch that will create a new profile to profiles.json from existing file
+- Output usage instructions to logfile (console.log)
