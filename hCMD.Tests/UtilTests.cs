@@ -2,7 +2,9 @@ namespace hCMD.Tests
 {
     public class UtilTests
     {
-        [TestCase(@"C:\WINDOWS", @"C:\Test")]
+        [TestCase(@"C:\WINDOWS", @"C:\Users\Tester")]
+        [TestCase(@"C:\WINDOWS", @"C:/Users/Tester")]
+        [TestCase(@"C:\WINDOWS", @"C:\Users\Tester\")]
         [TestCase(@"C:\WINDOWS;C:\Users\Tester", @"C:\WINDOWS\System32")]
         public void AppendToPathString_ReturnsTrue(string environmentPathData, string pathToAppend)
         {
@@ -13,6 +15,9 @@ namespace hCMD.Tests
         }
 
         [TestCase(@"C:\WINDOWS", "")]
+        [TestCase(@"C:\WINDOWS", ";")]
+        [TestCase(@"C:\WINDOWS", @";C:\windows")]
+        [TestCase(@"C:\WINDOWS", @"C:\WINDOWS;")]
         [TestCase(@"C:\WINDOWS", @"C:\Users\Tester;C:\WINDWOS\System32")]
         public void AppendToPathString_ThrowsArgumentException(string environmentPathData, string pathToAppend)
         {
@@ -23,6 +28,10 @@ namespace hCMD.Tests
         }
 
         [TestCase(@"C:\WINDOWS", @"c:\windows")]
+        [TestCase(@"C:\WINDOWS", @"C:\windows\")]
+        [TestCase(@"C:\WINDOWS\", @"C:\WINDOWS")]
+        [TestCase(@"C:\WINDOWS;C:\Users\Tester", "C:/Users/Tester")]
+        [TestCase(@"C:\WINDOWS;C:/Users/Tester/", "C:/users/tester/")]
         [TestCase(@"C:\WINDOWS;C:\WINDOWS\System32;C:\Users\Tester", @"C:\WINDOWS\system32")]
         public void IncludedInPathString_ReturnsTrue(string environmentPathData, string pathToCheck)
         {
@@ -30,7 +39,11 @@ namespace hCMD.Tests
         }
 
         [TestCase(@"C:\WINDOWS", "")]
+        [TestCase(@"C:\WINDOWS", "C:/")]
         [TestCase(@"C:\WINDOWS", @"C:\")]
+        [TestCase(@"C:\WINDOWS", "C:/WINDOW")]
+        [TestCase(@"C:\WINDOWS", "C:/WINDOWS//")]
+        [TestCase(@"C:\WINDOWS", @"C:\windows\\")]
         [TestCase(@"C:WINDOWS", @"C:\Users\Tester")]
         public void IncludedInPathString_ReturnsFalse(string environmentPathData, string pathToCheck)
         {
