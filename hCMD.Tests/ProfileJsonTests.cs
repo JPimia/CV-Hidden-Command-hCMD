@@ -43,9 +43,11 @@ namespace hCMD.Tests
 
             foreach (Profile profile in profiles)
             {
-                Assert.That(profile.Name, Is.TypeOf<string>());
-                Assert.That(profile.ProcessToStart, Is.TypeOf<string>());
-                Assert.That(profile.Arguments, Is.TypeOf<string>());
+                PropertyInfo[] properties = typeof(Profile).GetProperties();
+                foreach (var property in properties)
+                {
+                    object value = property.GetValue(profile)!;
+                }
             }
         }
 

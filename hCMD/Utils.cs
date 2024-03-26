@@ -31,9 +31,14 @@ namespace hCMD
 
         public static bool IncludedInPathString(string environmentPath, string directory)
         {
+            if (string.IsNullOrEmpty(directory))
+            {
+                return false;
+            }
+
             foreach (var path in environmentPath.Split(';'))
             {
-                if (directory.Equals(path, StringComparison.OrdinalIgnoreCase))
+                if (Path.GetFullPath(directory).Equals(Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

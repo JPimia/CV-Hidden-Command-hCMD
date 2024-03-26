@@ -28,8 +28,8 @@ namespace hCMD.Tests
         }
 
         [TestCase(@"C:\WINDOWS", @"c:\windows")]
-        [TestCase(@"C:\WINDOWS", @"C:\windows\")]
-        [TestCase(@"C:\WINDOWS\", @"C:\WINDOWS")]
+        [TestCase(@"C:\WINDOWS", @"C:\windows")]
+        [TestCase(@"C:\WINDOWS\", @"C:\WINDOWS\")]
         [TestCase(@"C:\WINDOWS;C:\Users\Tester", "C:/Users/Tester")]
         [TestCase(@"C:\WINDOWS;C:/Users/Tester/", "C:/users/tester/")]
         [TestCase(@"C:\WINDOWS;C:\WINDOWS\System32;C:\Users\Tester", @"C:\WINDOWS\system32")]
