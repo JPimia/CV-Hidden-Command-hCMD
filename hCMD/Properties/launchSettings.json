@@ -2,7 +2,7 @@
   "profiles": {
     "hCMD": {
       "commandName": "Project",
-      "commandLineArgs": "start profile1"
+      "commandLineArgs": "start /addProfile"
     }
   }
 }

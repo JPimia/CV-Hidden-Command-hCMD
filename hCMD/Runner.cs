@@ -18,13 +18,16 @@ namespace hCMD
                 return;
             }
 
-            string action = args[0];
+            string action = args[1];
             var executor = ProcessExecutor.GetInstance();
 
             switch (action)
             {
                 case "/updatePath":
                     SetupPathVariable();
+                    break;
+                case "/addProfile":
+                    ProfileEditor.AddProfile();
                     break;
                 case "/profile":
                     if (args.Length < 2)
