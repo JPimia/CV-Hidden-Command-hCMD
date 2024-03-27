@@ -2,17 +2,23 @@
 
 namespace hCMD
 {
-    // TODO: Implement methods to check environment PATH variable contents and manipulate it
     public static class Utils
     {
+        private static readonly string PATH_VARIABLE = "PATH";
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         internal static bool IncludedInPathVariable()
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            var paths = Environment.GetEnvironmentVariable("PATH");
+            var pathData = Environment.GetEnvironmentVariable(PATH_VARIABLE);
 
-            return IncludedInPathString(paths ?? "", currentDirectory);
+            if (pathData == null)
+            {
+                logger.Fatal($"Environment variable named '{PATH_VARIABLE}' was not found!");
+                return false;
+            }
+
+            return IncludedInPathString(pathData, currentDirectory);
         }
 
         internal static void UpdatePathVariable()
@@ -20,25 +26,25 @@ namespace hCMD
             if (IncludedInPathVariable()) return;
 
             var scope = EnvironmentVariableTarget.User;
-            var userPath = Environment.GetEnvironmentVariable("PATH", scope);
+            var userPath = Environment.GetEnvironmentVariable(PATH_VARIABLE, scope);
             var currentDirectory = Directory.GetCurrentDirectory();
 
-            if (userPath != null)
+            if (userPath == null)
             {
-                Environment.SetEnvironmentVariable("PATH", AppendToPathString(userPath, currentDirectory), scope);
+                logger.Fatal($"Environment variable named '{PATH_VARIABLE}' was not found!");
+                return;
             }
+
+            Environment.SetEnvironmentVariable(PATH_VARIABLE, AppendToPathString(userPath, currentDirectory), scope);
         }
 
         public static bool IncludedInPathString(string environmentPath, string directory)
         {
-            if (string.IsNullOrEmpty(directory))
-            {
-                return false;
-            }
+            var pathToSearch = directory.NormalizePath();
 
             foreach (var path in environmentPath.Split(';'))
             {
-                if (Path.GetFullPath(directory).Equals(Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase))
+                if (pathToSearch.Equals(path.NormalizePath(), StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -49,16 +55,23 @@ namespace hCMD
 
         public static string AppendToPathString(string environmentPath, string directory)
         {
+            var pathToAppend = directory.NormalizePath();
+
             if (string.IsNullOrEmpty(directory))
             {
-                throw new ArgumentException("directory argument was empty!");
+                throw new ArgumentException("Given directory argument was empty!");
             }
-            else if (directory.Contains(';'))
+            else if (pathToAppend.Contains(';'))
             {
-                throw new ArgumentException("directory argument contains multiple paths!");
+                throw new ArgumentException("Given directory is not singlular and/or valid path!");
             }
 
-            return $"{environmentPath};{directory}";
+            return $"{environmentPath};{pathToAppend}";
+        }
+
+        private static string NormalizePath(this string path)
+        {
+            return Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
         }
     }
 }

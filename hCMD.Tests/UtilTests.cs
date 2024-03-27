@@ -2,16 +2,17 @@ namespace hCMD.Tests
 {
     public class UtilTests
     {
-        [TestCase(@"C:\WINDOWS", @"C:\Users\Tester")]
-        [TestCase(@"C:\WINDOWS", @"C:/Users/Tester")]
-        [TestCase(@"C:\WINDOWS", @"C:\Users\Tester\")]
-        [TestCase(@"C:\WINDOWS;C:\Users\Tester", @"C:\WINDOWS\System32")]
-        public void AppendToPathString_ReturnsTrue(string environmentPathData, string pathToAppend)
+        [TestCase(@"C:\windows", @"C:\Users\Tester", @"C:\Users\Tester")]
+        [TestCase(@"C:\WINDOWS", @"C:/Users/Tester", @"C:\Users\Tester")]
+        [TestCase(@"C:\windows", @"C:\Users\Tester\", @"C:\Users\Tester")]
+        [TestCase(@"C:\WINDOWS", @"C:/Users/Tester/", @"C:\Users\Tester")]
+        [TestCase(@"C:\Users\Tester", @"C:\WINDOWS/System32", @"C:\WINDOWS\System32")]
+        public void AppendToPathString_IsEqualToExpected(string environmentPathData, string pathToAppend, string expectedPathAddition)
         {
+            var expectedEnvironmentPath = $"{environmentPathData};{expectedPathAddition}";
             var result = Utils.AppendToPathString(environmentPathData, pathToAppend);
 
-            Assert.That(result, Does.StartWith($"{environmentPathData};"));
-            Assert.That(result, Does.EndWith($";{pathToAppend}"));
+            Assert.That(result, Is.EqualTo(expectedEnvironmentPath));
         }
 
         [TestCase(@"C:\WINDOWS", "")]
@@ -27,9 +28,9 @@ namespace hCMD.Tests
             );
         }
 
-        [TestCase(@"C:\WINDOWS", @"c:\windows")]
-        [TestCase(@"C:\WINDOWS", @"C:\windows")]
-        [TestCase(@"C:\WINDOWS\", @"C:\WINDOWS\")]
+        [TestCase(@"C:\WINDOWS", @"c:\windows/")]
+        [TestCase(@"C:\WINDOWS", @"C:\windows\")]
+        [TestCase(@"C:\WINDOWS\", @"C:\WINDOWS")]
         [TestCase(@"C:\WINDOWS;C:\Users\Tester", "C:/Users/Tester")]
         [TestCase(@"C:\WINDOWS;C:/Users/Tester/", "C:/users/tester/")]
         [TestCase(@"C:\WINDOWS;C:\WINDOWS\System32;C:\Users\Tester", @"C:\WINDOWS\system32")]
