@@ -1,9 +1,5 @@
 - Update current project source for unit testing/mocking
-	- Unit tests for JSON profiles
-	- Unit tests for Process execution (needs mocking)
-	- Unit tests for accepted arguments
-	- Fix Utils to pass the tests
-		- One test fails due to test being incorrectly implemented
-		- Others need to be fixed in Utils implementation
-- Add support for /addprofile switch that will create a new profile to profiles.json from existing file
+	- Unit tests for JSON profiles (optional)
+	- Unit tests for accepted arguments (optional)
+- Add support for /addprofile switch that will create a new profile to profiles.json from existing source
 - Output usage instructions to logfile (console.log)
