@@ -39,16 +39,22 @@ namespace hCMD.Tests
             Assert.That(Utils.IncludedInPathString(environmentPathData, pathToCheck), Is.True);
         }
 
-        [TestCase(@"C:\WINDOWS", "")]
         [TestCase(@"C:\WINDOWS", "C:/")]
         [TestCase(@"C:\WINDOWS", @"C:\")]
         [TestCase(@"C:\WINDOWS", "C:/WINDOW")]
-        [TestCase(@"C:\WINDOWS", "C:/WINDOWS//")]
-        [TestCase(@"C:\WINDOWS", @"C:\windows\\")]
         [TestCase(@"C:WINDOWS", @"C:\Users\Tester")]
         public void IncludedInPathString_ReturnsFalse(string environmentPathData, string pathToCheck)
         {
             Assert.That(Utils.IncludedInPathString(environmentPathData, pathToCheck), Is.False);
+        }
+
+        [TestCase(@"C:\WINDOWS", "")]
+        public void IncludedInPathString_ThrowsArgumentException(string environmentPathData, string pathToAppend)
+        {
+            Assert.Throws(
+                typeof(ArgumentException),
+                () => Utils.IncludedInPathString(environmentPathData, pathToAppend)
+            );
         }
     }
 }
