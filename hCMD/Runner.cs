@@ -19,6 +19,7 @@ namespace hCMD
             }
 
             string action = args[1];
+            string profileFile = args[2];
             var executor = ProcessExecutor.GetInstance();
 
             switch (action)
@@ -27,7 +28,7 @@ namespace hCMD
                     SetupPathVariable();
                     break;
                 case "/addProfile":
-                    ProfileEditor.AddProfile();
+                    ProfileEditor.AddProfile(profileFile);
                     break;
                 case "/profile":
                     if (args.Length < 2)
