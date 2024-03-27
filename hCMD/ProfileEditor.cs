@@ -5,41 +5,54 @@ namespace hCMD
 {
     internal class ProfileEditor
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public static void AddProfile(string profileFile)
         {
-            Logger logger = LogManager.GetCurrentClassLogger();
-            string profileContent = File.ReadAllText(profileFile);
-            string[] lines = profileContent.Split('\n');
-            string jsonFilePath = "profiles.json";
-            List<Profile> profiles = ProfileParser.Parse(jsonFilePath) ?? new List<Profile>();
-
-            string Name = "";
-            string ProcessToStart = "";
-            string Arguments = "";
-
-            foreach (string line in lines)
+            try
             {
-                if (line.Contains("Name"))
+                string profileContent = File.ReadAllText(profileFile);
+                string[] lines = profileContent.Split('\n');
+
+                string Name = "";
+                string ProcessToStart = "";
+                string Arguments = "";
+
+                foreach (string line in lines)
                 {
-                    Name = line.Split('=')[1].Trim();
+                    if (line.Contains("Name"))
+                    {
+                        Name = GetValueFromLine(line);
+                    }
+                    else if (line.Contains("ProcessToStart"))
+                    {
+                        ProcessToStart = GetValueFromLine(line);
+                    }
+                    else if (line.Contains("Arguments"))
+                    {
+                        Arguments = GetValueFromLine(line);
+                    }
                 }
-                else if (line.Contains("ProcessToStart"))
-                {
-                    ProcessToStart = line.Split('=')[1].Trim();
-                }
-                else if (line.Contains("Arguments"))
-                {
-                    Arguments = line.Split('=')[1].Trim();
-                }
+
+                string jsonFilePath = "profiles.json";
+                List<Profile> profiles = ProfileParser.Parse(jsonFilePath) ?? new List<Profile>();
+
+                Profile newProfile = new Profile { Name = Name, ProcessToStart = ProcessToStart, Arguments = Arguments };
+
+                profiles.Add(newProfile);
+
+                string json = JsonConvert.SerializeObject(profiles, Formatting.Indented);
+                File.WriteAllText(jsonFilePath, json);
+                logger.Info($"Profile {Name} added to {jsonFilePath}");
             }
-
-            Profile newProfile = new Profile { Name = Name, ProcessToStart = ProcessToStart, Arguments = Arguments };
-
-            profiles.Add(newProfile);
-
-            string json = JsonConvert.SerializeObject(profiles, Formatting.Indented);
-            File.WriteAllText(jsonFilePath, json);
-            logger.Info($"Profile {Name} added to {jsonFilePath}");
+            catch (Exception e)
+            {
+                logger.Error(e.Message, "error while adding profile");
+                throw;
+            }
+        }
+        public static string GetValueFromLine(string line)
+        {
+            return line.Split("=")[1].Trim();
         }
     }
 }
