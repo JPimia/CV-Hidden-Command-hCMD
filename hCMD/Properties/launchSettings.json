@@ -2,7 +2,7 @@
   "profiles": {
     "hCMD": {
       "commandName": "Project",
-      "commandLineArgs": "start /addProfile profile4.bat"
+      "commandLineArgs": "/addProfile NewProfile \"C:\\Users\\JariPimia\\Desktop\\profile4.bat\""
     }
   }
 }

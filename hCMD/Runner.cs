@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
+using System.IO.Enumeration;
 
 namespace hCMD
 {
@@ -18,8 +19,9 @@ namespace hCMD
                 return;
             }
 
-            string action = args[1];
-            string profileFile = args[2];
+            string action = args[0];
+            string fileName = args[1];
+            string source = args[2];
             var executor = ProcessExecutor.GetInstance();
 
             switch (action)
@@ -28,7 +30,10 @@ namespace hCMD
                     SetupPathVariable();
                     break;
                 case "/addProfile":
-                    ProfileEditor.AddProfile(profileFile);
+                    
+                    ProfileEditor.AddProfile(fileName, source);
+                    
+                    
                     break;
                 case "/profile":
                     if (args.Length < 2)
