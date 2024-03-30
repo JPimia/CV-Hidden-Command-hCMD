@@ -2,6 +2,6 @@
 	{
 		"name": "testProfile",
 		"process_name": "cmd",
-		"arguments": "testArgs"
+		"arguments": []
 	}
 ]
