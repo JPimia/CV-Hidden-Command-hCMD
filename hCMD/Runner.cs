@@ -55,7 +55,7 @@ namespace hCMD
                     executor.LoadProfile(profile);
                     break;
                 default:
-                    executor.Execute(action, string.Join(" ", args.Skip(1)));
+                    executor.Execute(action, args.Skip(1).ToArray());
                     break;
             }
         }

@@ -26,7 +26,7 @@ namespace hCMD
             }
         }
 
-        public void Execute(string processName, string arguments)
+        public void Execute(string processName, string[] arguments)
         {
             try
             {

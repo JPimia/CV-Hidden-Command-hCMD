@@ -8,23 +8,35 @@ namespace hCMD
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public static void AddProfile(string fileName, string source)
         {
+            string extension = Path.GetExtension(source);
+            string jsonFilePath = "profiles.json";
+            string profileContent = File.ReadAllText(source);
+            string[] lines = profileContent.Split('\n');
+            string[] trimmedLines = lines.Select(line => line.Trim()).ToArray();
+
+            List<Profile> profiles = ProfileParser.Parse(jsonFilePath) ?? new List<Profile>();
+
             try
             {
-                string profileContent = File.ReadAllText(source);
-                string[] lines = profileContent.Split('\n');
-                string destinationFilePath = $"{fileName}.bat";
-                File.Copy(source, destinationFilePath);
+                switch (extension)
+                {
+                    case ".bat":
+                        profiles.Add(new Profile { Name = fileName, ProcessToStart = "cmd.exe", Arguments = trimmedLines });
+                        break;
+                    case ".ps1":
+                        profiles.Add(new Profile { Name = fileName, ProcessToStart = "ps", Arguments = trimmedLines });
+                        break;
+                    case ".cmd":
+                        profiles.Add(new Profile { Name = fileName, ProcessToStart = "cmd.exe", Arguments = trimmedLines });
+                        break;
+                    case ".vbs":
+                        profiles.Add(new Profile { Name = fileName, ProcessToStart = "wscript", Arguments = trimmedLines });
+                        break;
+                    default:
+                        logger.Error("Invalid file extension");
+                        break;
+                }
                 
-
-                string jsonFilePath = "profiles.json";
-                List<Profile> profiles = ProfileParser.Parse(jsonFilePath) ?? new List<Profile>();
-
-                string[] arguments = lines.Skip(2).ToArray();
-
-                Profile newProfile = new Profile { Name = lines[0], ProcessToStart = lines[1], Arguments = arguments };
-
-                profiles.Add(newProfile);
-
                 string json = JsonConvert.SerializeObject(profiles, Formatting.Indented);
                 File.WriteAllText(jsonFilePath, json);
                 logger.Info($"Profile {fileName} added to {jsonFilePath}");
