@@ -26,16 +26,19 @@ namespace hCMD
             }
         }
 
-        public void Execute(string processName, string[] arguments)
+        public void Execute(string processName, string arguments, bool internalCommand = false)
         {
             try
             {
-                var process = new Process();
-
-                process.StartInfo = new ProcessStartInfo {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c {processName} {arguments}",
-                    UseShellExecute = false
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = processName,
+                        Arguments = $"/c {arguments}",
+                        UseShellExecute = false,
+                        CreateNoWindow = internalCommand,
+                    }
                 };
 
                 process.Start();
@@ -46,6 +49,7 @@ namespace hCMD
                 logger.Error(ex, "Error executing process");
             }
         }
+
         public void LoadProfile(Profile profile)
         {
             if (profile.ProcessToStart == null || profile.Arguments == null)
@@ -53,7 +57,8 @@ namespace hCMD
                 logger.Error("ProcessToStart or Arguments are null in the profile");
                 return;
             }
-            Execute(profile.ProcessToStart, profile.Arguments);
+
+            Execute(profile.ProcessToStart, string.Join(" ", profile.Arguments));
         }
     }
 }

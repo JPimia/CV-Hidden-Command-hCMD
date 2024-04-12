@@ -1,11 +1,10 @@
 ﻿using NLog;
 using NLog.Targets;
 using NLog.Config;
-using System.IO.Enumeration;
 
 namespace hCMD
 {
-    public class Runner
+    public class Runner : IArgumentDelegate
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -13,51 +12,55 @@ namespace hCMD
         {
             SetupLogging();
 
-            if (args.Length < 1)
+            ArgumentHandler.OnArgumentsReceived(new Runner(), args);
+        }
+
+        public void OnAddProfile(string profileName, string profileSource)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnError(string errorMessage)
+        {
+            logger.Error(errorMessage);
+        }
+
+        public void OnLoadProfile(string profileName)
+        {
+            var executor = ProcessExecutor.GetInstance();
+            var profile = ProfileManager.GetProfile("profiles.json", profileName);
+
+            if (profile == null)
             {
-                logger.Trace("Usage: hCMD <command> <args>");
+                logger.Warn($"Profile {profileName} was not found!");
                 return;
             }
 
-            string action = args[0];
-            string fileName = args[1];
-            string source = args[2];
+            executor.LoadProfile(profile);
+        }
+
+        public void OnRunCommand(string command, string arguments)
+        {
             var executor = ProcessExecutor.GetInstance();
 
-            switch (action)
+            executor.Execute(command, arguments);
+        }
+
+        public void OnSetupEnvironmentPath()
+        {
+            if (Utils.IncludedInPathVariable())
             {
-                case "/updatePath":
-                    SetupPathVariable();
-                    break;
-                case "/addProfile":
-                    
-                    ProfileEditor.AddProfile(fileName, source);
-                    
-                    
-                    break;
-                case "/profile":
-                    if (args.Length < 2)
-                    {
-                        logger.Warn("Missing profile identifier!");
-                        return;
-                    }
-
-                    var profileName = args[1];
-                    var profile = ProfileParser.GetProfile("profiles.json", profileName);
-
-
-                    if (profile == null)
-                    {
-                        logger.Warn($"Profile {profileName} was not found!");
-                        return;
-                    }
-
-                    executor.LoadProfile(profile);
-                    break;
-                default:
-                    executor.Execute(action, args.Skip(1).ToArray());
-                    break;
+                logger.Info("Environment PATH variable already contains current directory.");
+                return;
             }
+
+            logger.Info("Updating environment PATH variable.");
+            Utils.UpdatePathVariable();
+        }
+
+        public void OnShowUsageInstructions()
+        {
+            logger.Trace("Usage: hCMD <command> <args>");
         }
 
         private static void SetupLogging()
@@ -77,18 +80,6 @@ namespace hCMD
 
             LogManager.Configuration = configuration;
             logger.Info("Logging setup complete");
-        }
-
-        private static void SetupPathVariable()
-        {
-            if (Utils.IncludedInPathVariable())
-            {
-                logger.Info("Environment PATH variable already contains current directory.");
-                return;
-            }
-
-            logger.Info("Environment PATH variable updated.");
-            Utils.UpdatePathVariable();
         }
     }
 }

@@ -3,7 +3,7 @@ using NLog;
 
 namespace hCMD
 {
-    public static class ProfileParser
+    public static class ProfileManager
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -17,7 +17,7 @@ namespace hCMD
             {
                 profiles = JsonConvert.DeserializeObject<List<Profile>>(jsonData);
             }
-            catch (JsonSerializationException exception)
+            catch (Exception exception)
             {
                 logger.Warn(exception);
             }

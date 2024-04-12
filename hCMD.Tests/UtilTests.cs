@@ -49,11 +49,11 @@ namespace hCMD.Tests
         }
 
         [TestCase(@"C:\WINDOWS", "")]
-        public void IncludedInPathString_ThrowsArgumentException(string environmentPathData, string pathToAppend)
+        public void IncludedInPathString_ThrowsArgumentException(string environmentPathData, string pathToCheck)
         {
             Assert.Throws(
                 typeof(ArgumentException),
-                () => Utils.IncludedInPathString(environmentPathData, pathToAppend)
+                () => Utils.IncludedInPathString(environmentPathData, pathToCheck)
             );
         }
     }

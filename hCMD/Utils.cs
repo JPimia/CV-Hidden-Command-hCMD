@@ -43,7 +43,7 @@ namespace hCMD
         internal static bool ExecutableExistsInPathVariable(string executable)
         {
             var environmentPath = Environment.GetEnvironmentVariable(PATH_VARIABLE);
-            var pathExtensions = Environment.GetEnvironmentVariable(PATH_EXT_VARIABLE);
+            var pathExtension = Environment.GetEnvironmentVariable(PATH_EXT_VARIABLE);
 
             if (environmentPath == null)
             {
@@ -51,14 +51,14 @@ namespace hCMD
 
                 return false;
             }
-            else if (pathExtensions == null) 
+            else if (pathExtension == null) 
             {
                 logger.Fatal($"Environment variable named '{PATH_EXT_VARIABLE}' was not found!");
 
                 return false;
             }
 
-            return ExecutableExistsInPathString(environmentPath, pathExtensions, executable);
+            return ExecutableExistsInPathString(environmentPath, pathExtension, executable);
         }
 
         public static bool IncludedInPathString(string environmentPath, string directory)
